@@ -1,5 +1,9 @@
 from flask import Flask, render_template, Response
 from rpi_camera import RPiCamera
+import picamera
+import datetime
+import time
+import glob
 
 app = Flask(__name__)
 
@@ -10,6 +14,12 @@ def index():
 
 #the generator, a special type of function that yields, instead of returns.
 def gen(camera):
+
+    camera = picamera.PiCamera()
+    camera.resolution = (640, 480)
+    camera.start_recording('my_video.h264')
+    camera.wait_recording(10)
+    camera.stop_recording()
 
     while True:
         frame = camera.get_frame()
